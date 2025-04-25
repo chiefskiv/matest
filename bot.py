@@ -16,7 +16,7 @@ web3 = Web3(Web3.HTTPProvider(RPC_URL))
 web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 TRANSFER_TOPIC = web3.keccak(text="Transfer(address,address,uint256)").hex()
-TOPIC_TO = "0x" + TARGET_ADDRESS[2:].rjust(64, '0')
+TOPIC_TO = "0x" + TARGET_ADDRESS[2:].lower().rjust(64, '0')
 
 def reset_telegram_updates():
     print("⚙️ Сбрасываем getUpdates у Telegram...")
