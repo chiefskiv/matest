@@ -5,8 +5,10 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 from hexbytes import HexBytes
 from web3.middleware import geth_poa_middleware
+import requests
+import asyncio
 
-# 🎯 Настройки
+# 🔐 ВСТАВЬ СВОЙ API-КЛЮЧ
 BOT_TOKEN = "8091288421:AAFGzQnglUcH7uSIFx5EO0THsfkHnS8ANCo"
 TARGET_ADDRESS = Web3.to_checksum_address("0xcC0CfC5C95831EFaaaf2c141257cD46573EADEb5")
 USDT_ADDRESS = Web3.to_checksum_address("0xc2132d05d31c914a87c6611c10748aeb04b58e8f")
@@ -18,7 +20,17 @@ web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 TRANSFER_TOPIC = web3.keccak(text="Transfer(address,address,uint256)")
 TOPIC_TO = HexBytes('0x' + TARGET_ADDRESS[2:].rjust(64, '0'))
 
-# 📦 Команда /stat
+# 📌 Функция сброса getUpdates (для устранения конфликта)
+def reset_telegram_updates():
+    print("⚙️ Сбрасываем getUpdates у Telegram...")
+    try:
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates"
+        requests.get(url, timeout=5)
+        print("✅ Сброс завершён.")
+    except Exception as e:
+        print(f"⚠️ Не удалось сбросить getUpdates: {e}")
+
+# 📦 Обработка команды /stat
 async def stat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.utcnow()
     start = now - timedelta(hours=1)
@@ -53,16 +65,18 @@ async def stat(update: Update, context: ContextTypes.DEFAULT_TYPE):
         senders[sender] += amount
 
     if not senders:
-        await update.message.reply_text("⛔ Нет транзакций за последний час.")
+        await update.message.reply_text("⛔ За последний час нет переводов USDT.")
     else:
-        response = "📊 USDT за последний час:\n"
+        result = "📊 USDT за последний час:\n"
         for sender, total in sorted(senders.items(), key=lambda x: x[1], reverse=True):
-            response += f"{sender} — {total:.2f} USDT\n"
-        await update.message.reply_text(response)
+            result += f"{sender} — {total:.2f} USDT\n"
+        await update.message.reply_text(result)
 
-# ▶️ Запуск бота
+# ▶️ Запуск Telegram-бота
 if __name__ == "__main__":
+    reset_telegram_updates()
+
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("stat", stat))
-    print("✅ Бот запущен...")
+    print("✅ Бот запущен и слушает /stat...")
     app.run_polling()
