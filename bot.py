@@ -7,7 +7,7 @@ from web3.middleware import geth_poa_middleware
 import requests
 
 # 🔐 ВСТАВЬ СВОЙ ТОКЕН НИЖЕ
-BOT_TOKEN = "7121806903:AAFMx_TAhKo3XKkqd8_OQOngoXMhr9mbroU"
+BOT_TOKEN = "7454626704:AAFgK-2fqDiofX6jDlk8fjKUmNzAawMAZp8"
 TARGET_ADDRESS = Web3.to_checksum_address("0xcC0CfC5C95831EFaaaf2c141257cD46573EADEb5")
 USDT_ADDRESS = Web3.to_checksum_address("0xc2132d05d31c914a87c6611c10748aeb04b58e8f")
 RPC_URL = "https://polygon-mainnet.infura.io/v3/b0affbfb7d4f4c29929e4996faac0b3c"
