@@ -9,7 +9,7 @@ import requests
 import asyncio
 
 # 🔐 ВСТАВЬ СВОЙ API-КЛЮЧ
-BOT_TOKEN = "8091288421:AAFGzQnglUcH7uSIFx5EO0THsfkHnS8ANCo"
+BOT_TOKEN = "AAFMx_TAhKo3XKkqd8_OQOngoXMhr9mbroU"
 TARGET_ADDRESS = Web3.to_checksum_address("0xcC0CfC5C95831EFaaaf2c141257cD46573EADEb5")
 USDT_ADDRESS = Web3.to_checksum_address("0xc2132d05d31c914a87c6611c10748aeb04b58e8f")
 RPC_URL = "https://polygon-mainnet.infura.io/v3/b0affbfb7d4f4c29929e4996faac0b3c"
